@@ -1,0 +1,303 @@
+<!-- সম্পূর্ণ HTML কোড -->
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <title>ঈদের শুভেচ্ছা ৫০০০৳</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri&display=swap');
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Hind Siliguri', sans-serif;
+      background: linear-gradient(135deg, #fceabb 0%, #f8b500 100%);
+      color: #333;
+      transition: background 0.5s, color 0.5s;
+    }
+    .loader {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .spinner {
+      width: 60px;
+      height: 60px;
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid #27ae60;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .container {
+      max-width: 700px;
+      margin: auto;
+      padding: 0 20px 40px;
+      text-align: center;
+    }
+    .card {
+      background: white;
+      padding: 30px 20px 40px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      margin-bottom: 40px;
+    }
+    h1 { font-size: 3rem; color: #e67e22; margin-top: 0; }
+    .amount { font-size: 4rem; color: #27ae60; margin: 20px 0; }
+    .banner {
+      margin: 20px auto 30px;
+      border-radius: 15px;
+      overflow: hidden;
+      max-width: 100%;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+    .banner img {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+    }
+    .progress-container {
+      background: #ddd;
+      border-radius: 30px;
+      height: 20px;
+      width: 100%;
+      margin: 20px 0;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%;
+      background: #27ae60;
+      width: 0%;
+      transition: width 1s linear;
+    }
+    .timer { font-size: 1.2rem; margin-bottom: 10px; }
+
+    .button {
+      background: #e67e22;
+      color: #fff;
+      padding: 15px 30px;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-top: 10px;
+    }
+    .button:hover { background: #d35400; }
+
+    .share-section {
+      display: none;
+      margin-top: 20px;
+    }
+
+    .share-buttons a {
+      margin: 0 10px;
+      text-decoration: none;
+      font-size: 1.2rem;
+      padding: 10px 20px;
+      border-radius: 30px;
+      color: white;
+      display: inline-block;
+    }
+
+    .facebook { background: #3b5998; }
+    .messenger { background: #0084ff; }
+    .whatsapp { background: #25d366; }
+
+    .comments {
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+      max-height: 400px;
+      overflow-y: auto;
+      text-align: left;
+    }
+
+    .comment {
+      padding: 10px 15px;
+      margin-bottom: 12px;
+      border-left: 5px solid #27ae60;
+      background: #f9fff9;
+      border-radius: 8px;
+      opacity: 0;
+      transform: translateY(20px) scale(0.95);
+      animation: slideIn 0.5s forwards;
+    }
+
+    .comment strong { color: #2ecc71; }
+    .comment time { font-size: 0.9rem; color: #888; float: right; }
+
+    .add-comment {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 30px;
+    }
+
+    .add-comment input, .add-comment button {
+      padding: 10px;
+      font-size: 1rem;
+      border-radius: 30px;
+      border: 2px solid #27ae60;
+    }
+
+    .add-comment input { flex: 1; min-width: 100px; }
+
+    .add-comment button {
+      background: #27ae60;
+      color: white;
+      cursor: pointer;
+      border: none;
+    }
+
+    @keyframes slideIn {
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="loader" id="loader">
+    <div class="spinner"></div>
+  </div>
+
+  <div class="container" style="display:none;" id="mainContent">
+    <div class="card">
+      <h1>ঈদের শুভেচ্ছা!</h1>
+      <p>আপনি পেয়েছেন</p>
+      <div class="amount">৫০০০৳</div>
+
+      <div class="banner">
+        <img src="https://i.imghippo.com/files/asLv4313sLI.png" alt="ঈদের শুভেচ্ছা ব্যানার" />
+      </div>
+
+      <div class="timer">টাকা claim করতে <span id="countdown">10</span> সেকেন্ড বাকি</div>
+      <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+      <button class="button" id="claimBtn" onclick="handleClaim()" disabled>টাকা সংগ্রহ করুন</button>
+
+      <div class="share-section" id="shareSection">
+        <p>টাকা claim করতে আপনাকে ১০ জন বন্ধুদের শেয়ার করতে হবে:</p>
+        <div class="share-buttons">
+          <a href="https://www.facebook.com/sharer/sharer.php?u=https://example.com"
+             target="_blank" class="facebook" onclick="incrementShare()">Facebook</a>
+
+          <a href="fb-messenger://share/?link=https://example.com"
+             target="_blank" class="messenger" onclick="incrementShare()">Messenger</a>
+
+          <a href="https://api.whatsapp.com/send?text=ঈদের%20শুভেচ্ছা%20-%205000৳%20পেতে%20ভিজিট%20করুন:%20https://example.com"
+             target="_blank" class="whatsapp" onclick="incrementShare()">WhatsApp</a>
+        </div>
+        <p id="shareCountText">শেয়ার হয়েছে: <strong id="shareCount">0</strong>/10</p>
+      </div>
+    </div>
+
+    <div class="comments" id="comments">
+      <div class="comment"><strong>সালমা</strong> <time>Just Now</time><p>আমি ৫০০০৳ পেয়েছি!</p></div>
+      <div class="comment"><strong>রহিম</strong> <time>Just Now</time><p>ধন্যবাদ, দারুণ উপহার!</p></div>
+    </div>
+
+    <div class="add-comment">
+      <input type="text" id="name" placeholder="আপনার নাম" />
+      <input type="text" id="message" placeholder="মন্তব্য লিখুন" />
+      <button onclick="addComment()">মন্তব্য</button>
+    </div>
+  </div>
+
+  <script>
+    let timeLeft = 10;
+    let shared = 0;
+    let firstRedirectDone = false;
+
+    window.onload = function () {
+      setTimeout(() => {
+        document.getElementById('loader').style.display = 'none';
+        document.getElementById('mainContent').style.display = 'block';
+        startCountdown();
+      }, 3000);
+    };
+
+    function startCountdown() {
+      const countdownEl = document.getElementById("countdown");
+      const progressBar = document.getElementById("progressBar");
+      let timer = setInterval(() => {
+        timeLeft--;
+        countdownEl.textContent = timeLeft;
+        progressBar.style.width = (100 - timeLeft * 10) + '%';
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          document.getElementById("claimBtn").disabled = false;
+        }
+      }, 1000);
+    }
+
+    function handleClaim() {
+      if (shared >= 10) {
+        if (!firstRedirectDone) {
+          firstRedirectDone = true;
+          window.location.href = "https://www.profitableratecpm.com/ufzkc3isf?key=f882e662019b05b9b7bbd35a4e477789";
+        } else {
+          window.location.href = "https://freemonybd.netlify.app/";
+        }
+      } else {
+        const btn = document.getElementById("claimBtn");
+        const shareSection = document.getElementById("shareSection");
+        shareSection.style.display = "block";
+        btn.disabled = true;
+      }
+    }
+
+    function incrementShare() {
+      shared++;
+      document.getElementById("shareCount").textContent = shared;
+      if (shared >= 10) {
+        const btn = document.getElementById("claimBtn");
+        btn.disabled = false;
+        btn.textContent = "টাকা এখন সংগ্রহ করুন";
+      }
+    }
+
+    function addComment() {
+      const name = document.getElementById('name').value.trim();
+      const message = document.getElementById('message').value.trim();
+      if (!name || !message) return alert("দয়া করে নাম ও মন্তব্য লিখুন।");
+      createComment(name, message);
+      document.getElementById('name').value = '';
+      document.getElementById('message').value = '';
+    }
+
+    function createComment(name, message) {
+      const commentBox = document.getElementById('comments');
+      const div = document.createElement('div');
+      div.className = 'comment';
+      const now = new Date().toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit' });
+      div.innerHTML = `<strong>${name}</strong> <time>${now}</time><p>${message}</p>`;
+      commentBox.appendChild(div);
+      commentBox.scrollTop = commentBox.scrollHeight;
+    }
+
+    const fakeNames = ['জাহিদ', 'তাসনিম', 'নুরুল', 'শাহানা', 'সোহেল', 'রাবেয়া'];
+    const fakeMessages = [
+      'আমি মাত্র ৫০০০৳ পেলাম!', 'খুব সুন্দর উপহার, ধন্যবাদ!',
+      'ঈদ মোবারক সবাইকে!', 'আলহামদুলিল্লাহ পেয়েছি!'
+    ];
+    function addFakeComment() {
+      const name = fakeNames[Math.floor(Math.random() * fakeNames.length)];
+      const message = fakeMessages[Math.floor(Math.random() * fakeMessages.length)];
+      createComment(name, message);
+    }
+    setInterval(addFakeComment, 7000);
+  </script>
+</body>
+</html>
